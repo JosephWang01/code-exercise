@@ -1,1 +1,33 @@
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        //最简单的一种方法，找到piles中的最大最小值，然后二分查找，使得分成的堆数成为不大于h的最大值
+        int max = 1;
+        int min = 1;
+        for(int i = 0; i < piles.size(); ++i){
+            if(piles[i] > max){
+                max = piles[i];
+            }
+        }
+        //return needHour(piles, min);
+        while(min <= max){
+            int mid = (min + max)>>1;
+            if(needHour(piles, mid) > h){
+                min = mid+1;
+            }else{
+                max = mid-1;
+            }
+        }
+        return min;
 
+    }
+    int needHour(vector<int> piles, int eat) {
+        int total = 0;
+        for (int pile : piles) {
+            int hour = pile / eat;
+            total += hour * eat == pile ? hour : hour + 1;
+        }
+        return total;
+    }
+
+};
